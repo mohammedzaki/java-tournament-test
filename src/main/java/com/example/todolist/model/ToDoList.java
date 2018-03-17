@@ -29,7 +29,7 @@ public class ToDoList {
     private String name;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "list")
-    private Set<ToDoEntry> entries = new HashSet<>();
+    private Set<ToDoEntry> entries;
 
     public Long getId() {
         return id;
