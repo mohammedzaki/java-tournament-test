@@ -76,7 +76,8 @@ public class ToDoListApiController {
     /**
      * Returns 200 if successful, 404 if no such list id is found
      */
-    @DeleteMapping("/{listid}")
+    @DeleteMapping("/{listId}")
+    @ResponseStatus(HttpStatus.OK)
     public void deleteList(@PathVariable Long listId) {
         listRepository.delete(listId);
     }
@@ -87,9 +88,10 @@ public class ToDoListApiController {
      * belong to the list.
      */
     @DeleteMapping("/{entryId}/{listId}")
+    @ResponseStatus(HttpStatus.OK)
     public void deleteEntry(@PathVariable Long listId, @PathVariable Long entryId) {
         ToDoList list = ensureExists(listRepository.findOne(listId));
-        ToDoEntry entry = entryRepository.findOne(entryId);
+        ToDoEntry entry = ensureExists(entryRepository.findOne(entryId));
         if (entry.getList() != list) {
             throw new IllegalArgumentException();
         }
