@@ -1,8 +1,8 @@
 package com.example.todolist.controller;
 
 import com.example.todolist.exceptions.NotFoundException;
-import com.example.todolist.model.ToDoEntry;
-import com.example.todolist.model.ToDoList;
+import com.example.todolist.entity.ToDoEntry;
+import com.example.todolist.entity.ToDoList;
 import com.example.todolist.repository.EntryRepository;
 import com.example.todolist.repository.ListRepository;
 import java.util.Collection;
@@ -46,11 +46,13 @@ public class ToDoListApiController {
      */
     @GetMapping("/{listId}")
     public Collection<ToDoEntry> getListEntries(@PathVariable Long listId) {
+        this.ensureExists(listRepository.findOne(listId));
         return entryRepository.findAllByListId(listId);
     }
 
     /**
-     * Returns 201 and new entity if operation successful or 400 if invalid data supplied.
+     * Returns 201 and new entity if operation successful or 400 if invalid data
+     * supplied.
      */
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
@@ -59,9 +61,9 @@ public class ToDoListApiController {
     }
 
     /**
-     * Returns 201 and new entity if operation successful or 400 if invalid data supplied.
-     * Note that creating to do entries with description longer than 16k chars is
-     * not allowed!
+     * Returns 201 and new entity if operation successful or 400 if invalid data
+     * supplied. Note that creating to do entries with description longer than
+     * 16k chars is not allowed!
      */
     @PostMapping("/{listId}")
     @ResponseStatus(HttpStatus.CREATED)
@@ -80,8 +82,9 @@ public class ToDoListApiController {
     }
 
     /**
-     * Deletes given entry if list and entry is valid. Return 404 if ether list or entry id is incorrect.
-     * Return 400 if specified entry ID does not belong to the list.
+     * Deletes given entry if list and entry is valid. Return 404 if ether list
+     * or entry id is incorrect. Return 400 if specified entry ID does not
+     * belong to the list.
      */
     @DeleteMapping("/{entryId}/{listId}")
     public void deleteEntry(@PathVariable Long listId, @PathVariable Long entryId) {
